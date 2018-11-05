@@ -3,7 +3,8 @@ package com.xhlim.utils.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
-import com.xhlim.utils.entity.User;
+import com.sun.corba.se.spi.ior.ObjectKey;
+import com.xhlim.utils.json.entity.User;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -24,21 +25,20 @@ public class JsonUtilsTest {
         map.put("test", "sss");
         map.put("2s", "稍等");
 
-        User user = new User();
-        user.setName("张三");
-        user.setAge(10);
-        user.setIsRegist(true);
+        User user = new User().setName("张三").setAge(10).setIsRegist(true);
 
-        Map<String, Object> user1 = new HashMap();
-        user1.put("key1", "上三");
-        user1.put("keee", 101);
-        user1.put("sss,", true);
+        Map<String, Object> user1 = new HashMap<String, Object>() {{
+            put("key1", "上三");
+            put("keee", 101);
+            put("sss,", true);
+        }};
 
         List<Object> users = Arrays.asList(user, user1);
 
 
-        Map<String, User> test = new HashMap<>();
-        test.put("key", user);
+        Map<String, User> test = new HashMap<String, User>(){{
+            put("key", user);
+        }};
 
         System.out.println(JsonUtils.objToJson(test));
         System.out.println(JsonUtils.objToJson(map));
@@ -56,8 +56,17 @@ public class JsonUtilsTest {
     @Test
     public void test_jsonToPojo_typeReference() throws IOException {
         String json = "{\"name\":\"张三\",\"age\":10,\"isRegist\":true}";
+        User user = JsonUtils.jsonToPojo(json, new TypeReference<User>() {
+        });
         System.out.println((User) JsonUtils.jsonToPojo(json, new TypeReference<User>() {
         }));
+    }
+
+    @Test
+    public void test_jsonToMap() throws IOException {
+        String json = "{\"name\":\"张三\",\"age\":10,\"isRegist\":true}";
+        Map<String, ObjectKey> map = JsonUtils.jsonToMap(json);
+        System.out.println(map);
     }
 
 

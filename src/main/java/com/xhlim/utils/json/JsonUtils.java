@@ -54,6 +54,11 @@ public class JsonUtils {
     /**
      * json 转 pojo 对象
      *
+     * <pre>
+     *  eg:
+     *      User user = JsonUtils.jsonToPojo(json, new TypeReference&lt;User&gt;() {});
+     * </pre>
+     *
      * @param json          json
      * @param typeReference 自定义 TypeReference
      * @param <T>
@@ -71,12 +76,17 @@ public class JsonUtils {
      * @return
      * @throws IOException
      */
-    public static Map<String, Object> jsonToMap(String json) throws IOException {
+    public static Map jsonToMap(String json) throws IOException {
         return OBJECT_MAPPER.readValue(json, Map.class);
     }
 
     /**
      * json 转 Map
+     *
+     * <pre>
+     *  eg:
+     *      Map<String, User> map = JsonUtils.jsonToMap(json, User.class);
+     * </pre>
      *
      * @param json    json
      * @param classes 返回类型
@@ -106,6 +116,14 @@ public class JsonUtils {
     /**
      * json 转 all
      *
+     *
+     * <pre>
+     *  json 转指定类型的Map
+     *      Map&lt;String, User&gt; map = JsonUtils.jsonToObj(json, Map.class, String.class, User.class);
+     *  json 转指定类型的list
+     *      List&lt;User&gt; result = JsonUtils.jsonToObj(json, List.class, User.class);
+     * </pre>
+     *
      * @param json             json
      * @param parametrized     参数
      * @param parameterClasses 参数类
@@ -113,14 +131,19 @@ public class JsonUtils {
      * @return
      * @throws IOException
      */
-    public static <T extends Object> T jsonToObj(String json, Class<?> parametrized, Class<?>... parameterClasses)
-            throws IOException {
+    public static <T extends Object> T jsonToObj(String json, Class<?> parametrized, Class<?>... parameterClasses) throws IOException {
         JavaType javaType = OBJECT_MAPPER.getTypeFactory().constructParametricType(parametrized, parameterClasses);
         return OBJECT_MAPPER.readValue(json, javaType);
     }
 
     /**
      * json 转 all
+     *
+     * <pre>
+     *  使用方法
+     *     JavaType javaType = JsonUtils.getInstance().getTypeFactory().constructParametricType(List.class, User.class);
+     *     List&lt;User&gt; list = JsonUtils.jsonToObj(json, javaType);
+     * </pre>
      *
      * @param json     json
      * @param javaType

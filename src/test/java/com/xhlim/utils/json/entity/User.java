@@ -1,8 +1,9 @@
-package com.xhlim.utils.entity;
+package com.xhlim.utils.json.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * @author xhlim@outlook.com
@@ -11,6 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Accessors(chain = true)
 public class User {
     private String name;
     private Integer age;

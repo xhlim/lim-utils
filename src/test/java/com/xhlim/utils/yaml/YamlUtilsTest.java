@@ -1,8 +1,14 @@
 package com.xhlim.utils.yaml;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.xhlim.utils.entity.User;
-import com.xhlim.utils.json.JsonUtils;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
+import com.xhlim.utils.constant.Constant;
+import com.xhlim.utils.json.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,8 +17,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,49 +28,11 @@ import java.util.Map;
 public class YamlUtilsTest {
 
     @Test
-    public void test() throws JsonProcessingException, FileNotFoundException {
-        String yml = "list:\n" +
-                "- &id001\n" +
-                "  age: 123\n" +
-                "  isRegist: false\n" +
-                "  name: 暂时\n" +
-                "- age: 12322\n" +
-                "  isRegist: true\n" +
-                "  name: 经济法\n" +
-                "test: 测试1是否，ss\n" +
-                "user: *id001";
-
-
+    public void test() throws IOException {
         Yaml yaml = new Yaml();
-
-        User user = new User();
-        user.setName("暂时");
-        user.setAge(123);
-        user.setIsRegist(false);
-        User user1 = new User();
-        user1.setName("经济法");
-        user1.setAge(12322);
-        user1.setIsRegist(true);
-
-        Tmp tmp = new Tmp();
-        tmp.setTest("测试1是否，ss");
-        tmp.setUser(user);
-        tmp.setList(Arrays.asList(user, user1));
-
-
-        String str = yaml.dumpAsMap(tmp);
-        System.out.println(str);
-
-        Map load = yaml.loadAs(str, Map.class);
-        System.out.println(load);
-
-        System.out.println(JsonUtils.objToJson(load));
-
-
-        //    ===================
-        File file = new File("/Users/xhlim/IdeaProjects/xhlim/lim-utils/src/test/resources/applic.yaml");
+        String path = "/Users/xhlim/IdeaProjects/xhlim/lim-utils/src/test/resources/app.yaml";
+        File file = new File(path);
         FileInputStream stream = new FileInputStream(file);
-        Object load1 = yaml.loadAll(stream);
         Iterable<Object> objects = yaml.loadAll(stream);
         System.out.println("===========");
         for (Object object : objects) {
@@ -73,11 +40,24 @@ public class YamlUtilsTest {
                 System.out.println(object);
             }
         }
-        System.out.println(load1);
-        System.out.println(JsonUtils.objToJson(load1));
-        System.out.println("=====================");
-        List<User> users = Arrays.asList(user, user1);
-        System.out.println(yaml.dumpAll(users.iterator()));
+        System.out.println("===========");
+
+        YAMLFactory factory = new YAMLFactory();
+        YAMLParser parser = factory.createParser(file);
+        ObjectMapper mapper = new ObjectMapper();
+        TreeNode node = mapper.readTree(parser);
+        System.out.println(node);
+        System.out.println(node.isArray());
+        JsonParser traverse = node.traverse();
+        // TreeTraversingParser treeTraversingParser = new TreeTraversingParser(tr);
+        // final Service service = mapper.readValue(treeTraversingParser, Service.class);
+
+        System.out.println("-------------------------------------------------------------------------------------------------------");
+        ObjectMapper mapper1 = new ObjectMapper(new YAMLFactory());
+        List<Object> values = mapper1.readValues(parser, new TypeReference<ObjectNode>(){{}}).readAll();
+        values.stream().forEach(e -> System.out.println(e));
+        // RequestEntity.method(HttpMethod.GET,URI.create("http://{test}/sss")).contentType()
+
     }
 
     @Getter

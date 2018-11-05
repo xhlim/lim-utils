@@ -1,20 +1,3 @@
-list:
-- age: 123
-  isRegist: false
-  name: 暂时
-- age: 12322
-  isRegist: true
-  name: 经济法
-test: 测试1是否，ss
-user:
-  age: 123
-  isRegist: false
-  name: 暂时
----
-age: 123
-isRegist: false
-name: 暂时
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,7 +19,6 @@ spec:
         image: nginx:1.7.9
         ports:
         - containerPort: 80
-
 ---
 kind: Service
 apiVersion: v1
