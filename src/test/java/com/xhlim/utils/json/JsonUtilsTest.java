@@ -3,8 +3,10 @@ package com.xhlim.utils.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
-import com.sun.corba.se.spi.ior.ObjectKey;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xhlim.utils.json.entity.User;
+import jdk.nashorn.internal.ir.ObjectNode;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -20,7 +22,7 @@ import java.util.Map;
 public class JsonUtilsTest {
 
     @Test
-    public void test_objToJson() throws JsonProcessingException {
+    public void test_objToJson() throws IOException {
         Map<String, String> map = new HashMap<>();
         map.put("test", "sss");
         map.put("2s", "稍等");
@@ -44,6 +46,10 @@ public class JsonUtilsTest {
         System.out.println(JsonUtils.objToJson(map));
         System.out.println(JsonUtils.objToJson(user));
         System.out.println(JsonUtils.objToJson(users));
+        System.out.println("===============================");
+        String s1 = "{\"2s\":\"稍等\",\"test\":\"sss\"}";
+        String s2 = "{\"name\":\"张三\",\"age\":10,\"isRegist\":true}";
+        String s3 = "{\"name\":\"张三1\",\"age1\":101,\"isRegist\":true}";
     }
 
 
@@ -65,7 +71,7 @@ public class JsonUtilsTest {
     @Test
     public void test_jsonToMap() throws IOException {
         String json = "{\"name\":\"张三\",\"age\":10,\"isRegist\":true}";
-        Map<String, ObjectKey> map = JsonUtils.jsonToMap(json);
+        Map<String, User> map = JsonUtils.jsonToMap(json);
         System.out.println(map);
     }
 

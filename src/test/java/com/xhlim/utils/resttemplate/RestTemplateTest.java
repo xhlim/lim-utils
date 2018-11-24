@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class RestTemplateTest {
 
-    @Test
+    // @Test
     public void test() throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://lmk.189.cn:9093/wapclient/neteaseCard.do";
@@ -59,7 +59,7 @@ public class RestTemplateTest {
 
         FileOutputStream wf = new FileOutputStream("/Users/xhlim/IdeaProjects/xhlim/lim-utils/src/test/java/com/xhlim/utils/resttemplate/a.txt",true);
 
-        for (int i = 0; i < 200 ; i ++ ){
+        for (int i = 0; i < 2 ; i ++ ){
             requestContent.put("pageindex", i);
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> entity = new HttpEntity<>(JsonUtils.objToJson(param), headers);

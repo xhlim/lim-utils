@@ -13,7 +13,7 @@ import java.util.Map;
  * @author xhlim@outlook.com
  * @date 2018-08-29
  */
-public class SecretUtils {
+public class SecretUtil {
 
     /**
      * 加密算法

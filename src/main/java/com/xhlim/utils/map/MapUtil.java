@@ -8,7 +8,7 @@ import java.util.Map;
  * @author xhlim@outlook.com
  * @create 2018-06-29
  */
-public class MapUtils {
+public class MapUtil {
 
     /**
      * 集合为空

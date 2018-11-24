@@ -8,7 +8,7 @@ import java.util.Collection;
  * @author xhlim@outlook.com
  * @create 2018-06-29
  */
-public class CollectionUtils {
+public class CollectionUtil {
 
     /**
      * 集合为空

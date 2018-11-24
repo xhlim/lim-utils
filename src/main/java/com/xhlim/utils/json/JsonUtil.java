@@ -1,9 +1,12 @@
 package com.xhlim.utils.json;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,16 +18,29 @@ import java.util.Map;
  * @author xhlim@outlook.com
  * @create 2018-06-07
  */
-public class JsonUtils {
+public class JsonUtil {
 
-    private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper(new JsonFactory());
 
-    private JsonUtils() {
+    private JsonUtil() {
 
     }
 
     public static ObjectMapper getInstance() {
         return OBJECT_MAPPER;
+    }
+
+    /**
+     * yaml 字符串 转 json
+     *
+     * @param yaml 需要转换为json的yaml字符串
+     * @return
+     * @throws JsonProcessingException
+     */
+    public static String yamlStrToJson(String yaml) throws IOException {
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        JsonNode node = mapper.readTree(yaml);
+        return OBJECT_MAPPER.writeValueAsString(node);
     }
 
     /**
@@ -65,7 +81,7 @@ public class JsonUtils {
      * @return
      * @throws IOException
      */
-    public static <T extends Object> T jsonToPojo(String json, TypeReference typeReference) throws IOException {
+    public static <T extends Object> T jsonToPojo(String json, TypeReference<T> typeReference) throws IOException {
         return OBJECT_MAPPER.readValue(json, typeReference);
     }
 
@@ -154,6 +170,4 @@ public class JsonUtils {
     public static <T> T jsonToObj(String json, JavaType javaType) throws IOException {
         return OBJECT_MAPPER.readValue(json, javaType);
     }
-
-
 }
